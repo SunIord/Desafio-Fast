@@ -13,6 +13,6 @@ Workshop:
 Para a elaboração das regras de relacionamento, assumimos que um workshop pode ter vários colaboradores,
 assim como um colaborador pode participar de vários workshops, sendo então, uma relação N:N. 
 
-Dado que o enunciado menciona sobre registro de ata de presença, a ideia foi o reacionamento não ser simples, mas 
+Dado que o enunciado menciona sobre registro de ata de presença, a ideia foi o relacionamento não ser simples, mas 
 sim uma entidade-relacionamento "Presenca", com WorkshopId, ColaboradorId, e opcionalmente algo como DataRegistro ou Confirmado,
 Afim de resgistrar de fato aqueles participaram efetivamente do evento.
