@@ -1,0 +1,15 @@
+Optei por utilizar o MySQL como banco de dados relacional, conforme sugerido como bônus no desafio.
+A escolha foi feita para garantir persistência real dos dados
+
+Configuração utilizada:
+- MySQL 8.4 (instalado via WSL no Windows 11)
+- Database: WorkshopTracker
+- Usuário: root
+- Provider: Pomelo.EntityFrameworkCore.MySql
+
+O DbContext foi configurado com as três entidades (Colaborador, Workshop, Presenca),
+e a migration inicial foi gerada e aplicada com sucesso.
+
+Relacionamentos:
+- Colaborador (1) ----- (N) Presenca (N) ----- (1) Workshop
+- Índice único em (WorkshopId, ColaboradorId) para evitar duplicidade de presença
