@@ -1,0 +1,18 @@
+Baseado no material anexado no e-mail, já podemos montar as duas entidades base:
+
+Colaborador:
+- Id (int, chave primária)
+- Nome (string, obrigatório)
+
+Workshop:
+- Id (int, chave primária)
+- Nome (string, obrigatório)
+- DataRealizacao (DateTime)
+- Descricao (string)
+
+Para a elaboração das regras de relacionamento, assumimos que um workshop pode ter vários colaboradores,
+assim como um colaborador pode participar de vários workshops, sendo então, uma relação N:N. 
+
+Dado que o enunciado menciona sobre registro de ata de presença, a ideia foi o reacionamento não ser simples, mas 
+sim uma entidade-relacionamento "Presenca", com WorkshopId, ColaboradorId, e opcionalmente algo como DataRegistro ou Confirmado,
+Afim de resgistrar de fato aqueles participaram efetivamente do evento.
