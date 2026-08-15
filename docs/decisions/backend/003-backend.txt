@@ -1,0 +1,25 @@
+Com a api finalizada e conexão com o banco funcionando, decidir partir para fortalecimento do backend
+
+A primeira etapa certamente é deixa a lógica do delete dos colaboradores mais robustas, evitando a possivel situação atual:
+
+// DELETE /api/colaboradores/{id}
+[HttpDelete("{id}")]
+public async Task<IActionResult> Delete(int id)
+{
+    var colaborador = await _context.Colaboradores.FindAsync(id);
+    if (colaborador is null)
+        return NotFound(new { mensagem = $"Colaborador com Id {id} não encontrado." });
+
+    // importante anotar que se o colaborador tiver presenças vinculadas, o delete
+    // pode falhar por restrição de integridade dependendo da configuração do mysql
+    _context.Colaboradores.Remove(colaborador);
+    await _context.SaveChangesAsync();
+    return NoContent();
+}
+
+Após consulta, foi decido usar delete restrict no lugar de cascade (que deletaria todas as presenças referentes ao colaborador ou de um workshop).
+Sendo assim, no lugar de um erro, seria lançado um aviso
+
+a primeira etapa foi "adcionar novas regras no modelBuilder", para ()
+
+depois, foi adcionado aos controllers as mensagans para o usuario ter um retorno claro das ações executadas por trás do sistema (melhorar esse trecho) 
