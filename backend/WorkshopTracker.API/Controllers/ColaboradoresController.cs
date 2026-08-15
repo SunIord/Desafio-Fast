@@ -3,11 +3,13 @@ using Microsoft.EntityFrameworkCore;
 using WorkshopTracker.API.Data;
 using WorkshopTracker.API.DTOs;
 using WorkshopTracker.API.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WorkshopTracker.API.Controllers;
 
 [ApiController]
 [Route("api/colaboradores")]
+[Authorize]
 public class ColaboradoresController : ControllerBase
 {
     private readonly AppDbContext _context;
