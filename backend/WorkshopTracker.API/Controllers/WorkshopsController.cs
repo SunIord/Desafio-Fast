@@ -118,6 +118,15 @@ public class WorkshopsController : ControllerBase
         var workshop = await _context.Workshops.FindAsync(id);
         if (workshop is null)
             return NotFound(new { mensagem = $"Workshop com Id {id} não encontrado." });
+        
+        var possuiPresencas = await _context.Presencas
+            .AnyAsync(p => p.WorkshopId == id);
+        
+        if (possuiPresencas)
+            return Conflict(new
+            {
+                mensagem = "Não é possível excluir este workshop pois ele possui presenças registradas."
+            });
 
         _context.Workshops.Remove(workshop);
         await _context.SaveChangesAsync();

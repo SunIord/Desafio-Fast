@@ -94,8 +94,15 @@ public class ColaboradoresController : ControllerBase
         if (colaborador is null)
             return NotFound(new { mensagem = $"Colaborador com Id {id} não encontrado." });
 
-        // importante anotar que se o colaborador tiver presenças vinculadas, o delete
-        // pode falhar por restrição de integridade dependendo da configuração do mysql
+        var possuiPresencas = await _context.Presencas
+            .AnyAsync(p => p.ColaboradorId == id);
+
+        if (possuiPresencas)
+            return Conflict(new
+            {
+                mensagem = "Não é possível excluir este colaborador pois ele possui presenças registradas em workshops."
+            });
+
         _context.Colaboradores.Remove(colaborador);
         await _context.SaveChangesAsync();
         return NoContent();
