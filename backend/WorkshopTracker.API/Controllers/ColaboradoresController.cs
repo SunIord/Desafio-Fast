@@ -9,7 +9,6 @@ namespace WorkshopTracker.API.Controllers;
 
 [ApiController]
 [Route("api/colaboradores")]
-[Authorize]
 public class ColaboradoresController : ControllerBase
 {
     private readonly AppDbContext _context;
@@ -51,6 +50,7 @@ public class ColaboradoresController : ControllerBase
     }
 
     // POST /api/colaboradores
+    [Authorize]
     [HttpPost]
     public async Task<ActionResult<ColaboradorResponseDto>> Create(ColaboradorCreateDto dto)
     {
@@ -72,6 +72,7 @@ public class ColaboradoresController : ControllerBase
     }
 
     // PUT /api/colaboradores/{id}
+    [Authorize]
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(int id, ColaboradorUpdateDto dto)
     {
@@ -89,6 +90,7 @@ public class ColaboradoresController : ControllerBase
     }
 
     // DELETE /api/colaboradores/{id}
+    [Authorize]
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {

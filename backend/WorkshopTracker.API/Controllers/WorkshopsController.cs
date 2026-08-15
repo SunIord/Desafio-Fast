@@ -9,7 +9,6 @@ namespace WorkshopTracker.API.Controllers;
 
 [ApiController]
 [Route("api/workshops")]
-[Authorize]
 public class WorkshopsController : ControllerBase
 {
     private readonly AppDbContext _context;
@@ -67,6 +66,7 @@ public class WorkshopsController : ControllerBase
     }
 
     // POST /api/workshops
+    [Authorize]
     [HttpPost]
     public async Task<ActionResult<WorkshopResponseDto>> Create(WorkshopCreateDto dto)
     {
@@ -95,6 +95,7 @@ public class WorkshopsController : ControllerBase
     }
 
     // PUT /api/workshops/{id}
+    [Authorize]
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(int id, WorkshopUpdateDto dto)
     {
@@ -114,6 +115,7 @@ public class WorkshopsController : ControllerBase
     }
 
     // DELETE /api/workshops/{id}
+    [Authorize]
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
