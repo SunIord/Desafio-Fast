@@ -1,0 +1,5 @@
+Com o backend sólido, foi feito uma etapa de preparação a integração.
+O frontend irá consomir a API via fetch(), utilizando os endpoints GET públicos para listar workshops e colaboradores. 
+As operações de escrita (POST, PUT, DELETE) exigem autenticação JWT, uma vez que elas não fazem parte do escopo do desafio do frontend.
+
+A comunicação é feita via HTTP (http://localhost:5187), com CORS configurado.
