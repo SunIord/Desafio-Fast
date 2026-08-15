@@ -9,21 +9,27 @@ export default function WorkshopDetailPage() {
   const { id } = useParams();
   const [workshop, setWorkshop] = useState(null);
   const [carregando, setCarregando] = useState(true);
+  const [erro, setErro] = useState(null);
 
   useEffect(() => {
     setCarregando(true);
-    getWorkshopById(id).then((dados) => {
-      setWorkshop(dados);
-      setCarregando(false);
-    });
+    getWorkshopById(id)
+      .then((dados) => {
+        setWorkshop(dados);
+        setCarregando(false);
+      })
+      .catch((err) => {
+        setErro(err.message);
+        setCarregando(false);
+      });
   }, [id]);
 
   if (carregando) return <Loading />;
 
-  if (!workshop)
+  if (erro)
     return (
       <section className="page">
-        <EmptyState mensagem="Workshop não encontrado." />
+        <EmptyState mensagem={`Não foi possível carregar o workshop: ${erro}`} />
         <Link to="/workshops">Voltar para a lista</Link>
       </section>
     );

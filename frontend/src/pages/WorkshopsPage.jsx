@@ -8,15 +8,19 @@ import EmptyState from "../components/EmptyState";
 export default function WorkshopsPage() {
   const [workshops, setWorkshops] = useState([]);
   const [carregando, setCarregando] = useState(true);
+  const [erro, setErro] = useState(null);
 
   useEffect(() => {
-    getWorkshops().then((dados) => {
-      setWorkshops(dados);
-      setCarregando(false);
-    });
+    getWorkshops()
+      .then((dados) => setWorkshops(dados))
+      .catch((err) => setErro(err.message))
+      .finally(() => setCarregando(false));
   }, []);
 
   if (carregando) return <Loading />;
+
+  if (erro)
+    return <EmptyState mensagem={`Não foi possível carregar os workshops: ${erro}`} />;
 
   if (workshops.length === 0)
     return <EmptyState mensagem="Nenhum workshop cadastrado." />;
