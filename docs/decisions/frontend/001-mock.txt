@@ -1,0 +1,11 @@
+O frontend foi iniciado com Vite + React, porque é o setup mais rápido e leve pra começar uma aplicação dessas. 
+O comando "npm create vite@latest . -- --template react" criou a estrutura base com hot-reload, que já facilita o desenvolvimento sem precisar ficar recarregando a página toda hora.
+
+Foi criado um mock inicial (src/data/mock.js) com dados no mesmo formato da API real, baseado no contrato validado no docs/api.md. 
+Isso permite desenvolver as telas sem depender do backend rodando, e quando chegar a hora de integrar, a única mudança será trocar o mock pelo fetch().
+
+Os dados mock incluem 3 workshops e 4 colaboradores, com repetição de colaboradores entre workshops de propósito — isso vai alimentar os gráficos depois.
+
+O roteamento foi configurado com react-router-dom, com três rotas
+
+A camada de serviço (src/services/api.js) isola a origem dos dados
