@@ -1,0 +1,14 @@
+Para proteger os endpoints da API, optei por uma abordagem JWT, por ser padrão da indústria para APIs REST.
+
+Foi feito:
+- Tabela Usuarios no banco com senha hasheada via BCrypt 
+- Endpoint POST /api/auth/login que valida usuário/senha e devolve token JWT
+- Token assinado com chave secreta de 32+ caracteres
+- Controllers Workshops e Colaboradores protegidos com [Authorize]
+- Swagger configurado com botão "Authorize" pra testar os endpoints
+
+A chave secreta é armazenada no appsettings.Development.json, e o sistema possui token com expiração configurável, definido para uma hora
+
+Usuário padrão:
+- Username: admin
+- Password: admin123
