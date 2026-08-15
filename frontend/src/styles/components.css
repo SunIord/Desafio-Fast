@@ -1,0 +1,59 @@
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.list-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  padding: var(--space-md);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+}
+
+.list-item-title {
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.list-item-title:hover {
+  color: var(--color-primary);
+}
+
+.list-item-subtitle {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.empty-state {
+  padding: var(--space-lg);
+  text-align: center;
+  color: var(--color-text-muted);
+  background-color: var(--color-surface);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius);
+}
+
+.loading {
+  padding: var(--space-lg);
+  text-align: center;
+  color: var(--color-text-muted);
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: var(--space-md);
+  font-size: var(--font-size-sm);
+}
+
+.workshop-meta {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.workshop-descricao {
+  margin-bottom: var(--space-lg);
+}
