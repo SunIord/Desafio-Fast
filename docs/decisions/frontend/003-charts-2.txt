@@ -1,0 +1,8 @@
+Com a implementação dos gráficos feita, a tela ficou branca. Debugando, vi que a página 
+até recebia os workshops, mas a API não devolvia a propriedade 'colaboradoresPresentes' que o frontend esperava.
+
+O mock tinha essa lista, mas a API real não. O GET /api/workshops só retornava os dados básicos (id, nome, data, descricao).
+Como os gráficos precisam saber quantos colaboradores participaram de cada workshop, faltou esse dado.
+
+Foi então feito um ajuste na API: GetAll() do WorkshopsController pra incluir as presenças e os colaboradores via Include/ThenInclude. 
+Agora a resposta do GET /api/workshops já vem com colaboradoresPresentes.

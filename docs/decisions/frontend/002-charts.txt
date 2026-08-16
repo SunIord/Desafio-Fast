@@ -1,0 +1,10 @@
+Para os gráficos, me pareceu bem pesquisar sobre oque de fato seria relevante ser exibido com os dados que temos.
+
+As duas sugestões do desafio foram mantidas, mas foi pensado um terceiro gráfico para representar a participação dos colaboradores nos workshops ao longo do tempo.
+Assim, podemos ter uma visualização rápida de como estão as presenças dos workshops feitos.
+
+Ficando então:
+
+-Barras: participação por colaborador
+-Pizza: proporção de presenças por workshop
+-Linha/barras temporal: presentes por workshop ao longo do tempo
