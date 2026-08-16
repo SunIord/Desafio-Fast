@@ -109,3 +109,26 @@ export async function deleteColaborador(id, token) {
   if (!response.ok) return handleResponse(response);
   return true;
 }
+
+// --- Presenças ---
+
+export async function registrarPresenca(workshopId, colaboradorId, token) {
+  const response = await fetch(`${API_URL}/presencas`, {
+    method: "POST",
+    headers: buildAuthHeaders(token),
+    body: JSON.stringify({ workshopId, colaboradorId }),
+  });
+  return handleResponse(response);
+}
+
+export async function removerPresenca(workshopId, colaboradorId, token) {
+  const response = await fetch(
+    `${API_URL}/presencas/${workshopId}/${colaboradorId}`,
+    {
+      method: "DELETE",
+      headers: buildAuthHeaders(token),
+    }
+  );
+  if (!response.ok) return handleResponse(response);
+  return true;
+}
