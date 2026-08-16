@@ -20,15 +20,24 @@ public class WorkshopsController : ControllerBase
 
     // GET /api/workshops
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<WorkshopResponseDto>>> GetAll()
+    public async Task<ActionResult<IEnumerable<WorkshopDetailDto>>> GetAll()
     {
         var workshops = await _context.Workshops
-            .Select(w => new WorkshopResponseDto
+            .Include(w => w.Presencas)
+                .ThenInclude(p => p.Colaborador)
+            .Select(w => new WorkshopDetailDto
             {
                 Id = w.Id,
                 Nome = w.Nome,
                 DataRealizacao = w.DataRealizacao,
-                Descricao = w.Descricao
+                Descricao = w.Descricao,
+                ColaboradoresPresentes = w.Presencas
+                    .Select(p => new ColaboradorPresenteDto
+                    {
+                        Id = p.Colaborador.Id,
+                        Nome = p.Colaborador.Nome
+                    })
+                    .ToList()
             })
             .ToListAsync();
 
