@@ -15,7 +15,12 @@ function Nav() {
 
   function handleLogout() {
     logout();
-    navigate("/login");
+    const paginaAtual = location.pathname;
+    if (paginaAtual === "/login" || paginaAtual.includes("/editar") || paginaAtual.includes("/novo")) {
+      navigate("/workshops");
+    } else {
+      navigate(paginaAtual);
+    }
   }
 
   return (
