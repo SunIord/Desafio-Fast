@@ -57,3 +57,7 @@
 .workshop-descricao {
   margin-bottom: var(--space-lg);
 }
+
+.chart-section {
+  margin-bottom: var(--space-lg);
+}
