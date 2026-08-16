@@ -1,11 +1,13 @@
 import { BrowserRouter, Routes, Route, Link, useNavigate } from "react-router-dom";
 import { useAuth } from "./context/AuthContext";
+import ProtectedRoute from "./components/ProtectedRoute";
 import ColaboradoresPage from "./pages/ColaboradoresPage";
 import WorkshopsPage from "./pages/WorkshopsPage";
 import WorkshopDetailPage from "./pages/WorkshopDetailPage";
+import WorkshopFormPage from "./pages/WorkshopFormPage";
+import ColaboradorFormPage from "./pages/ColaboradorFormPage";
 import ParticipacaoPage from "./pages/ParticipacaoPage";
 import LoginPage from "./pages/LoginPage";
-import ProtectedRoute from "./components/ProtectedRoute";
 
 function Nav() {
   const { isAuthenticated, username, logout } = useAuth();
@@ -45,8 +47,42 @@ function App() {
 
       <Routes>
         <Route path="/colaboradores" element={<ColaboradoresPage />} />
+        <Route
+          path="/colaboradores/novo"
+          element={
+            <ProtectedRoute>
+              <ColaboradorFormPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/colaboradores/:id/editar"
+          element={
+            <ProtectedRoute>
+              <ColaboradorFormPage />
+            </ProtectedRoute>
+          }
+        />
+
         <Route path="/workshops" element={<WorkshopsPage />} />
         <Route path="/workshops/:id" element={<WorkshopDetailPage />} />
+        <Route
+          path="/workshops/novo"
+          element={
+            <ProtectedRoute>
+              <WorkshopFormPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/workshops/:id/editar"
+          element={
+            <ProtectedRoute>
+              <WorkshopFormPage />
+            </ProtectedRoute>
+          }
+        />
+
         <Route path="/participacao" element={<ParticipacaoPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="*" element={<ColaboradoresPage />} />
