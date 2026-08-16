@@ -34,6 +34,29 @@ Na FAST Soluções, workshops trimestrais reúnem colaboradores para aprendizado
 
 Instruções completas de instalação, configuração de ambiente e execução (backend + frontend) estão em [`docs/setup.md`](docs/setup.md).
 
+## Testes
+
+A API possui um smoke test automatizado que valida os principais fluxos de ponta a ponta: autenticação, CRUD de workshops, CRUD de colaboradores, registro de presença e restrições de integridade (como o bloqueio de exclusão de recursos com vínculos ativos).
+
+O teste é feito via curl + jq, não depende de bibliotecas externas de teste, e roda contra a API real em execução local.
+
+Para rodar: 
+```bash
+./tests/api-smoke-test.sh
+```
+
+Se o backend estiver rodando em porta diferente, informe como argumento: 
+```bash
+./tests/api-smoke-test.sh http://localhost:outraporta/api
+```
+
+Pré-requisito: ter o `jq` instalado no sistema:
+
+```bash
+sudo apt install jq -y   # WSL/Ubuntu
+# No Windows, pode ser usado via WSL ou Git Bash com o binário disponível no PATH. 
+```
+
 ## Documentação
 
 - [`docs/setup.md`](docs/setup.md) — passo a passo de instalação e execução local
@@ -43,3 +66,7 @@ Instruções completas de instalação, configuração de ambiente e execução 
 ## Repositório
 
 https://github.com/SunIord/Desafio-Fast
+
+## Chat com Claude
+
+https://claude.ai/share/f2332110-18ab-40eb-a560-dae27c05c0bd
