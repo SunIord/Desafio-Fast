@@ -6,9 +6,12 @@ import './styles/variables.css'
 import './styles/base.css'
 import './styles/layout.css'
 import './styles/components.css'
+import { AuthProvider } from "./context/AuthContext";
 
-createRoot(document.getElementById('root')).render(
+createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <App />
+    <AuthProvider>
+      <App />
+    </AuthProvider>
   </StrictMode>,
 )
