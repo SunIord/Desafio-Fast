@@ -60,7 +60,7 @@ sudo apt install jq -y   # WSL/Ubuntu
 ## Documentação
 
 - [`docs/setup.md`](docs/setup.md) — passo a passo de instalação e execução local
-- [`docs/api.md`](docs/api.md) — contrato completo dos endpoints da API
+- [`docs/API.md`](docs/API.md) — contrato completo dos endpoints da API
 - [`docs/decisions/`](docs/decisions/) — ADRs com as decisões técnicas tomadas ao longo do projeto
 
 ## Repositório
