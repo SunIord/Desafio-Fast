@@ -18,8 +18,10 @@ public async Task<IActionResult> Delete(int id)
 }
 
 Após consulta, foi decido usar delete restrict no lugar de cascade (que deletaria todas as presenças referentes ao colaborador ou de um workshop).
-Sendo assim, no lugar de um erro, seria lançado um aviso
+Sendo assim, o banco bloqueia a exclusão se houver histórico vinculado.
 
-a primeira etapa foi "adcionar novas regras no modelBuilder", para ()
+Isso foi feito em duas camadas:
+- No DbContext: configurado explicitamente o Restrict nas FKs de Presenca, via OnModelCreating.
+- Nos Controllers: adicionada verificação com AnyAsync() antes de tentar deletar, retornando 409 Conflict com mensagem clara se houver presenças.
 
-depois, foi adcionado aos controllers as mensagans para o usuario ter um retorno claro das ações executadas por trás do sistema (melhorar esse trecho) 
+Assim, a aplicação dá um retorno amigável e o banco garante a integridade mesmo se algo escapar da validação.
