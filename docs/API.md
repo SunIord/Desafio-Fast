@@ -51,7 +51,8 @@ Retorna todos os workshops, já incluindo os colaboradores presentes em cada um.
     "dataRealizacao": "2026-08-15T16:00:00",
     "descricao": "Teste de RESTRICT",
     "colaboradoresPresentes": [
-      { "id": 3, "nome": "João" }
+      { "id": 3, "nome": "João" },
+      { "id": 4, "nome": "Teste Console" }
     ]
   }
 ]
@@ -170,6 +171,63 @@ Retorna todos os workshops, já incluindo os colaboradores presentes em cada um.
 
 ---
 
+## Presenças
+
+Endpoints introduzidos para permitir o vínculo entre colaborador e workshop via API (ver `docs/decisions/0006-endpoints-presenca.md`). Não existe um `GET` de listagem próprio — a leitura de presenças é feita através de `colaboradoresPresentes` no `GET /api/workshops` e `GET /api/workshops/{id}`.
+
+### POST /api/presencas
+**Autenticação:** obrigatória.
+
+Registra a presença de um colaborador em um workshop.
+
+**Request:**
+```json
+{
+  "workshopId": 1,
+  "colaboradorId": 4
+}
+```
+
+**Response 201:**
+```json
+{
+  "id": 2,
+  "workshopId": 1,
+  "workshopNome": "Workshop Teste",
+  "colaboradorId": 4,
+  "colaboradorNome": "Teste Console",
+  "dataRegistro": "2026-08-16T14:20:00Z"
+}
+```
+
+**Response 404** (workshop ou colaborador inexistente):
+```json
+{ "mensagem": "Workshop com Id {id} não encontrado." }
+```
+ou
+```json
+{ "mensagem": "Colaborador com Id {id} não encontrado." }
+```
+
+**Response 409** (colaborador já registrado neste workshop):
+```json
+{ "mensagem": "Este colaborador já está registrado como presente neste workshop." }
+```
+
+### DELETE /api/presencas/{workshopId}/{colaboradorId}
+**Autenticação:** obrigatória.
+
+Remove o vínculo de presença entre um colaborador e um workshop específicos. A rota usa o par `workshopId`/`colaboradorId` (não o `Id` interno da `Presenca`), já que é esse par que a interface tem disponível ao exibir a lista de presentes de um workshop.
+
+**Response:** `204 No Content`.
+
+**Response 404** (presença não encontrada para o par informado):
+```json
+{ "mensagem": "Presença não encontrada para este workshop e colaborador." }
+```
+
+---
+
 ## Convenção de erros
 
 Todos os erros seguem o formato `{ "mensagem": "..." }`, com os seguintes status HTTP:
@@ -179,4 +237,4 @@ Todos os erros seguem o formato `{ "mensagem": "..." }`, com os seguintes status
 | 400 | Dado inválido no corpo da requisição |
 | 401 | Não autenticado / credenciais inválidas |
 | 404 | Recurso não encontrado |
-| 409 | Conflito de integridade (exclusão bloqueada por dado relacionado) |
+| 409 | Conflito de integridade (exclusão bloqueada por dado relacionado, ou presença duplicada) |
