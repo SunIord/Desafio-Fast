@@ -1,0 +1,7 @@
+Após finalização do frontend "base", foi notado que não existe endpoints próprios para presença 
+sendo apenas possível vincular colaborador a workshop via banco manualmente.
+
+Considerando a decisão anterior de usar 'Presenca' como tabela, a decisão foi modificar a API
+para suportar essa funcionalidade que deveria existir antes.
+
+O passo dado no sistema foi expor `POST/DELETE /api/presencas` e uma tela de registro de presença.
