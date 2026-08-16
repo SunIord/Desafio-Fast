@@ -178,3 +178,22 @@
   opacity: 0.6;
   cursor: not-allowed;
 }
+
+.form-inline {
+  flex-direction: row;
+  align-items: center;
+  margin-top: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+
+.form-inline select {
+  padding: var(--space-sm);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  font: inherit;
+  flex: 1;
+}
+
+.form-inline button {
+  margin-top: 0;
+}
