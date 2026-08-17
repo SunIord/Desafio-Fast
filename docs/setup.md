@@ -85,62 +85,99 @@ Acesse o MySQL e crie o database:
 CREATE DATABASE WorkshopTracker;
 ```
 
-### 3.2 Criar as tabelas — caminho recomendado (SQL manual)
+### 3.2 Criar as tabelas — caminho recomendado (EF Core Migrations)
 
-Este é o caminho utilizado no desenvolvimento deste projeto (mais confiável — veja a nota sobre migrations abaixo). Execute o script em `scripts/create-tables.sql` contra o banco recém-criado:
+As migrations do EF Core funcionam neste projeto, desde que os pacotes estejam na versão correta.
 
+**Passos para usar migrations:**
+
+1. Instale a ferramenta `dotnet-ef` na versão 8.0.11:
+```bash
+dotnet tool install --global dotnet-ef --version 8.0.11
+```
+
+2. Certifique-se de que o projeto está com os pacotes na versão 8.0.11:
+```bash
+cd backend/WorkshopTracker.API
+dotnet add package Microsoft.EntityFrameworkCore.Design --version 8.0.11
+dotnet add package Microsoft.EntityFrameworkCore.Relational --version 8.0.11
+dotnet add package Microsoft.EntityFrameworkCore --version 8.0.11
+dotnet add package Pomelo.EntityFrameworkCore.MySql --version 8.0.2
+dotnet restore
+```
+
+3. Execute a migration:
+```bash
+dotnet ef database update
+```
+
+Observações:
+
+- A migration cria as tabelas com os nomes definidos no código (`Colaboradores`, `Workshops`, `Presencas`, `Usuarios`), mas no MySQL (Windows) elas podem aparecer em minúsculas (`colaboradores`, `workshops`, etc.) — isso não afeta o funcionamento.
+- O seed do usuário `admin/admin123` já está incluso na migration.
+- A migration **não** insere dados de demonstração (workshops, colaboradores). Para isso, execute o script de dados de demonstração logo abaixo.
+- Se as migrations não funcionarem no seu ambiente, use o caminho alternativo do SQL manual (seção 3.3).
+
+**Para popular com dados de demonstração (opcional, recomendado):**
+
+Depois de rodar a migration, execute o script de dados de demonstração:
+
+**No Git Bash (MSYS2):**
+```bash
+"C:/Program Files/MySQL/MySQL Server 8.0/bin/mysql.exe" -u root -p WorkshopTracker --default-character-set=utf8mb4 < scripts/seed-data.sql
+```
+
+**No PowerShell:**
+```powershell
+Get-Content scripts/seed-data.sql -Encoding UTF8 | & "C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql.exe" -u root -p WorkshopTracker --default-character-set=utf8mb4
+```
+
+**No WSL/Linux:**
+```bash
+mysql -u root -p WorkshopTracker --default-character-set=utf8mb4 < scripts/seed-data.sql
+```
+
+### 3.3 Criar as tabelas — alternativa (SQL manual)
+
+Caso as migrations não funcionem no seu ambiente, execute o script `scripts/create-tables.sql` diretamente no banco recém-criado. O comando varia conforme o ambiente:
+
+**No Git Bash (MSYS2):**
+```bash
+"C:/Program Files/MySQL/MySQL Server 8.0/bin/mysql.exe" -u root -p WorkshopTracker < scripts/create-tables.sql
+```
+
+**No PowerShell:**
+```powershell
+Get-Content scripts/create-tables.sql | & "C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql.exe" -u root -p WorkshopTracker
+```
+
+**No WSL/Linux:**
 ```bash
 mysql -u root -p WorkshopTracker < scripts/create-tables.sql
 ```
 
-Conteúdo de referência do script (confirme que bate com `scripts/create-tables.sql` do repositório — ajuste aqui se o arquivo real tiver diferenças):
+> O caminho do MySQL pode variar dependendo da instalação. Se o seu MySQL estiver em outro diretório, ajuste o caminho do executável (`mysql.exe`) conforme necessário.
 
-```sql
-CREATE TABLE Colaboradores (
-    Id INT AUTO_INCREMENT PRIMARY KEY,
-    Nome VARCHAR(255) NOT NULL
-);
+O script completo está em `scripts/create-tables.sql`. Ele cria as tabelas `colaboradores`, `workshops`, `presencas`, `usuarios` e insere o usuário padrão `admin/admin123`.
 
-CREATE TABLE Workshops (
-    Id INT AUTO_INCREMENT PRIMARY KEY,
-    Nome VARCHAR(255) NOT NULL,
-    DataRealizacao DATETIME NOT NULL,
-    Descricao TEXT NOT NULL
-);
+**Para popular com dados de demonstração:**
 
-CREATE TABLE Presencas (
-    Id INT AUTO_INCREMENT PRIMARY KEY,
-    WorkshopId INT NOT NULL,
-    ColaboradorId INT NOT NULL,
-    DataRegistro DATETIME NOT NULL,
-    CONSTRAINT FK_Presencas_Workshops FOREIGN KEY (WorkshopId) REFERENCES Workshops(Id) ON DELETE RESTRICT,
-    CONSTRAINT FK_Presencas_Colaboradores FOREIGN KEY (ColaboradorId) REFERENCES Colaboradores(Id) ON DELETE RESTRICT,
-    CONSTRAINT UQ_Presencas_Workshop_Colaborador UNIQUE (WorkshopId, ColaboradorId)
-);
+Após criar as tabelas, execute o script de dados de demonstração:
 
-CREATE TABLE Usuarios (
-    Id INT AUTO_INCREMENT PRIMARY KEY,
-    Username VARCHAR(100) NOT NULL UNIQUE,
-    PasswordHash VARCHAR(255) NOT NULL
-);
-
--- Usuário padrão para login (username: admin / senha: admin123)
--- O hash abaixo deve ser gerado via BCrypt.Net.BCrypt.HashPassword("admin123")
--- e substituído aqui antes de rodar o script.
-INSERT INTO Usuarios (Username, PasswordHash) VALUES ('admin', '<hash_gerado_via_bcrypt>');
-```
-
-### 3.3 Caminho alternativo — EF Core Migrations
-
-Não utilizado neste projeto por conflito de versões entre pacotes durante o desenvolvimento, mas é o caminho padrão do EF Core caso funcione no seu ambiente:
-
+**No Git Bash (MSYS2):**
 ```bash
-dotnet tool install --global dotnet-ef
-cd backend/WorkshopTracker.API
-dotnet ef database update
+"C:/Program Files/MySQL/MySQL Server 8.0/bin/mysql.exe" -u root -p WorkshopTracker --default-character-set=utf8mb4 < scripts/seed-data.sql
 ```
 
-Se esse comando falhar com erro de conflito de versão (`TypeLoadException` ou similar), use o caminho do SQL manual (seção 3.2) em vez de tentar corrigir a migration.
+**No PowerShell:**
+```powershell
+Get-Content scripts/seed-data.sql -Encoding UTF8 | & "C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql.exe" -u root -p WorkshopTracker --default-character-set=utf8mb4
+```
+
+**No WSL/Linux:**
+```bash
+mysql -u root -p WorkshopTracker --default-character-set=utf8mb4 < scripts/seed-data.sql
+```
 
 ---
 
@@ -148,7 +185,7 @@ Se esse comando falhar com erro de conflito de versão (`TypeLoadException` ou s
 
 ### 4.1 Connection string e chave JWT
 
-Dentro de `backend/WorkshopTracker.API/`, crie (ou edite) o arquivo `appsettings.Development.json` — **este arquivo não é versionado** (está no `.gitignore`):
+Dentro de `backend/WorkshopTracker.API/`, crie o arquivo `appsettings.Development.json` — **este arquivo não é versionado**:
 
 ```json
 {
@@ -160,9 +197,12 @@ Dentro de `backend/WorkshopTracker.API/`, crie (ou edite) o arquivo `appsettings
     "Issuer": "WorkshopTracker.API",
     "Audience": "WorkshopTracker.Clients",
     "ExpireMinutes": 60
-  }
+  },
+  "FrontendOrigin": "http://localhost:5173"
 }
 ```
+
+> Ajuste `FrontendOrigin` se o Vite estiver rodando em outra porta — esse valor é usado na configuração de CORS do backend.
 
 Exemplo local usado em desenvolvimento (senha `root123`):
 ```json
@@ -181,7 +221,7 @@ A API deve subir em `http://localhost:5187` (a porta exata aparece no terminal �
 
 ### 4.3 Login padrão
 
-Use as credenciais criadas no seed (seção 3.2) para autenticar:
+Use as credenciais do usuário admin, criadas automaticamente pela migration ou pelo script `create-tables.sql` (seção 3.2 ou 3.3, conforme o caminho escolhido) para autenticar:
 ```
 Username: admin
 Password: admin123
@@ -240,12 +280,19 @@ Com os dois rodando, acesse `http://localhost:5173` no navegador. As telas de li
 
 ## 7. Testes de API (smoke test)
 
-Um script de validação ponta a ponta da API está disponível em `tests/api-smoke-test.sh`. Com o backend rodando:
+Um script de validação ponta a ponta da API está disponível em `tests/api-smoke-test.sh`. Com o backend rodando, execute na raiz do projeto:
 
+**No Git Bash / WSL / Linux:**
 ```bash
 chmod +x tests/api-smoke-test.sh
 ./tests/api-smoke-test.sh
 ```
+
+**No PowerShell:**
+```powershell
+bash tests/api-smoke-test.sh
+```
+> Requer o Git Bash instalado e `bash.exe` disponível no PATH do Windows (instalado junto com o Git para Windows). Se o comando não for reconhecido, abra um terminal Git Bash e rode o script por lá em vez do PowerShell.
 
 Requer `curl` e `jq` instalados. Se o backend estiver em outra porta, passe como argumento:
 ```bash
@@ -261,5 +308,5 @@ Requer `curl` e `jq` instalados. Se o backend estiver em outra porta, passe como
 | `dotnet: command not found` | Terminal errado (Git Bash/PowerShell em vez de WSL, se o SDK foi instalado lá) | Abra um terminal WSL antes de rodar comandos `dotnet` |
 | Erro de CORS no navegador | Origem do frontend não corresponde à configurada no backend | Confira `FrontendOrigin` em `appsettings.Development.json` — deve bater com a porta real do Vite |
 | `401 Unauthorized` em endpoints de leitura | Não deveria ocorrer — `GET` é público | Confirme que está usando a versão atual dos controllers (sem `[Authorize]` nos métodos `GET`) |
-| `TypeLoadException` ao rodar `dotnet run` | Conflito de versão entre `Microsoft.AspNetCore.OpenApi` e `Microsoft.OpenApi` (bug conhecido do template padrão) | Certifique-se de que o projeto foi criado com `--use-controllers` (Swashbuckle), não Minimal API |
+| `TypeLoadException` (`Method 'Identifier'`) ao rodar `dotnet ef database update` | `dotnet-ef` e os pacotes `Microsoft.EntityFrameworkCore.*` estão em versões diferentes | Alinhe todos na versão 8.0.11 conforme seção 3.2, ou use o SQL manual (seção 3.3) |
 | Erro de certificado HTTPS ao acessar a API pelo navegador | Certificado de desenvolvimento não confiável | Rode `dotnet dev-certs https --trust` |
