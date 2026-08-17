@@ -23,7 +23,7 @@ import {
 import Loading from "../components/Loading";
 import EmptyState from "../components/EmptyState";
 
-const CORES_PIZZA = ["#2f6f4f", "#5a9c78", "#8fc4a3", "#b7ddc4", "#d8efe1"];
+const CORES_PIZZA = ["#0f4dba", "#3b7cdb", "#6a9fe5", "#9bc0ef", "#c7dbf7"];
 
 export default function ParticipacaoPage() {
   const [workshops, setWorkshops] = useState([]);
@@ -60,7 +60,7 @@ export default function ParticipacaoPage() {
             <XAxis dataKey="nome" />
             <YAxis allowDecimals={false} />
             <Tooltip />
-            <Bar dataKey="total" fill="#2f6f4f" name="Workshops" />
+            <Bar dataKey="total" fill="#0f4dba" name="Workshops" />
           </BarChart>
         </ResponsiveContainer>
       </div>
@@ -99,7 +99,7 @@ export default function ParticipacaoPage() {
             <Line
               type="monotone"
               dataKey="total"
-              stroke="#2f6f4f"
+              stroke="#0f4dba"
               strokeWidth={2}
               name="Presentes"
             />
